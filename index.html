@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envie Sua Imagem</title>
+</head>
+<body>
+    <h2>Envie sua imagem para melhorar a qualidade!</h2>
+    
+    <!-- Formulário para escolher o arquivo -->
+    <input type="file" id="fileInput" accept="image/*" />
+    <button onclick="sendImage()">Enviar Imagem</button>
+
+    <h3>Imagem Aprimorada</h3>
+    <!-- Aqui será exibida a imagem aprimorada -->
+    <img id="enhancedImage" style="display:none" width="300" />
+
+    <script>
+        // Função para enviar a imagem para a API
+        function sendImage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0]; // Pega o primeiro arquivo
+
+            if (!file) {
+                alert("Selecione uma imagem!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file); // Adiciona o arquivo ao formData
+
+            // Envia a imagem para a API
+            fetch("https://nome-da-sua-api.onrender.com/enhance/", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.blob())  // A resposta será uma imagem
+            .then(imageBlob => {
+                const imageObjectURL = URL.createObjectURL(imageBlob); // Cria um URL para a imagem
+                const enhancedImage = document.getElementById('enhancedImage');
+                enhancedImage.src = imageObjectURL; // Define o src da tag <img>
+                enhancedImage.style.display = 'block'; // Exibe a imagem
+            })
+            .catch(error => {
+                console.error('Erro ao enviar imagem:', error);
+            });
+        }
+    </script>
+</body>
+</html>
+v
