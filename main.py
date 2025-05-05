@@ -15,6 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def read_root():
+    return {"message": "API funcionando! Use /enhance/ para enviar a imagem."}
+
 @app.post("/enhance/")
 async def enhance_image(file: UploadFile = File(...)):
     contents = await file.read()
